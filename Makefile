@@ -4,7 +4,7 @@ LD=ld
 
 CINCLUDES=-Iinclude/
 CWARNINGS=-Wall -Wextra
-CFLAGS=-m32 -std=c99 -nostdlib -nostartfiles -nodefaultlibs -nostdinc -ffreestanding -fno-builtin $(CWARNINGS) $(CINCLUDES)
+CFLAGS=-m32 -nostdlib -nostartfiles -nodefaultlibs -nostdinc -ffreestanding -fno-builtin $(CWARNINGS) $(CINCLUDES)
 DFLAGS=-g -DDEBUG -O0
 
 AFLAGS=-f elf
