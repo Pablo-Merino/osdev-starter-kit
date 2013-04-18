@@ -21,6 +21,10 @@ void kmain(struct multiboot *mboot_ptr, unsigned int magic)
 	u32int initrd_end = *(u32int*)(mboot_ptr->mods_addr+4);
 	placement_address = initrd_end;
 
+	monitor_write("initrd is in ");
+	monitor_write_hex(initrd_location);
+	monitor_write("\n");
+
 	monitor_write("IDT Initialized!\n");
 	u32int a = kmalloc(8);
 	initialise_paging();
@@ -40,6 +44,8 @@ void kmain(struct multiboot *mboot_ptr, unsigned int magic)
 	u32int d = kmalloc(12);
 	monitor_write(", d: ");
 	monitor_write_hex(d);
+	monitor_write("\n");
+
 
 	fs_root = initialise_initrd(initrd_location);
 

@@ -1,0 +1,5 @@
+default 0
+timeout 3
+title OS Dev Starter Kit Kernel
+kernel /boot/kernel.elf
+module /boot/initrd.img
