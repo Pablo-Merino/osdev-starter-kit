@@ -2,7 +2,6 @@ CC=gcc
 ASM=nasm
 LD=ld
 
-CINCLUDES=-Iinclude/
 CWARNINGS=-Wall -Wextra
 CFLAGS=-m32 -nostdlib -nostartfiles -nodefaultlibs -nostdinc -ffreestanding -fno-builtin $(CWARNINGS) $(CINCLUDES)
 DFLAGS=-g -DDEBUG -O0
@@ -14,10 +13,11 @@ LDFLAGS=-melf_i386 -nostdlib -T build/linker.ld
 CSOURCES:=$(wildcard src/*.c)
 COBJECTS:=$(CSOURCES:%.c=%.o)
 
-ASOURCES:=$(wildcard src/*.asm)
+ASOURCES:=$(wildcard src/*.asm) 
 AOBJECTS:=$(ASOURCES:%.asm=%.ao)
 
 KERNEL=kernel.elf
+INITRD=initrd.img
 
 STAGE2=build/stage2_eltorito
 GENISOIMAGE=genisoimage
@@ -30,10 +30,12 @@ $(ISO): $(KERNEL)
 	mkdir -p iso/boot/grub
 	cp $(STAGE2) iso/boot/grub/stage2_eltorito
 	cp $(KERNEL) iso/boot/$(KERNEL)
+	cp $(INITRD) iso/boot/$(INITRD)
 	echo "default 0" > iso/boot/grub/menu.lst
 	echo "timeout 3" >> iso/boot/grub/menu.lst
 	echo "title OS Dev Starter Kit Kernel" >> iso/boot/grub/menu.lst
 	echo "kernel /boot/$(KERNEL)" >> iso/boot/grub/menu.lst
+	echo "module /boot/$(INITRD)" >> iso/boot/grub/menu.lst
 	$(GENISOIMAGE) -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -o $(ISO) iso/
 
 $(KERNEL): $(CSOURCES) $(ASOURCES) $(COBJECTS) $(AOBJECTS)
